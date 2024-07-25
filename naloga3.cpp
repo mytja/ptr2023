@@ -1,17 +1,31 @@
 #include <iostream>
 #include <vector>
+#include <iomanip>
 #include <cmath>
 
 using namespace std;
 
 int main() {
-    int dolzina, zacOmejitev, n;
+    float dolzina, zacOmejitev;
+    int n;
     cin >> dolzina >> zacOmejitev >> n;
 
-    vector<pair<int, int>> znaki(n);
+    cout << fixed;
+    cout << setprecision(2);
 
-    for (int i = 0; i < n; i++) {
-        int zacetek, hitrost;
+    n++;
+
+    if (n == 1) {
+        cout << floor((dolzina / zacOmejitev) * 100.0) / 100.0 << endl;
+        return 0;
+    }
+
+    vector<pair<float, float>> znaki(n);
+
+    znaki[0] = {0, zacOmejitev};
+
+    for (int i = 1; i < n; i++) {
+        float zacetek, hitrost;
         cin >> zacetek >> hitrost;
         znaki[i] = {zacetek, hitrost};
     }
@@ -19,10 +33,10 @@ int main() {
     float total = 0;
 
     for (int i = 0; i < n; i++) {
-        pair<int, int> znak = znaki[i];
+        pair<float, float> znak = znaki[i];
         if (znak.first >= dolzina) break;
 
-        pair<int, int> znak2 = {dolzina, 0};
+        pair<float, float> znak2 = {dolzina, 0};
         if (i + 1 < n) {
             znak2 = znaki[i + 1];
         }
@@ -33,10 +47,16 @@ int main() {
         float s = znak2.first - znak.first;
         float v = znak.second;
 
+        if (v == 0) {
+            // bizgec ne moreš delit z 0
+            continue;
+        }
+
         float t = s/v;
         total += t;
         //cout << t << " " << s << " " << v << endl;
     }
 
-    cout << floor(total * 100) / 100 << endl;
+    cout << floor(total * 100.0) / 100.0 << endl;
+    return 0;
 }
